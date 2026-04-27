@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GILES GLITCH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: monospace;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    /* GLITCH TITLE */
+    .glitch {
+      font-size: 40px;
+      margin-top: 80px;
+      position: relative;
+      color: cyan;
+      animation: flicker 2s infinite;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: "GILES ESPORTS";
+      position: absolute;
+      left: 0;
+      width: 100%;
+    }
+
+    .glitch::before {
+      color: red;
+      animation: glitch 0.3s infinite;
+    }
+
+    .glitch::after {
+      color: blue;
+      animation: glitch 0.3s infinite reverse;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-1px, 1px); }
+      80% { transform: translate(1px, -1px); }
+      100% { transform: translate(0); }
+    }
+
+    @keyframes flicker {
+      0%, 18%, 22%, 25%, 53%, 57%, 100% {opacity:1;}
+      20%, 24%, 55% {opacity:0.4;}
+    }
+
+    /* BUTTON */
+    .btn {
+      margin-top: 30px;
+      padding: 12px 25px;
+      border: 2px solid cyan;
+      background: transparent;
+      color: cyan;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: cyan;
+      color: black;
+      box-shadow: 0 0 20px cyan;
+    }
+
+    /* TERMINAL BOX */
+    .terminal {
+      margin: 40px auto;
+      width: 90%;
+      max-width: 400px;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid cyan;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    /* RAIN EFFECT */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body>
+
+<canvas id="rain"></canvas>
+
+<h1 class="glitch">GILES ESPORTS</h1>
+
+<p>⚡ Gaming Interaction Legends Esports ⚡</p>
+
+<a href="https://discord.gg/Join4Join">
+  <button class="btn">Join Clan 🚀</button>
+</a>
+
+<div class="terminal" id="terminal">
+  > Initializing system...<br>
+</div>
+
+<script>
+/* TERMINAL EFFECT */
+const terminal = document.getElementById("terminal");
+
+const messages = [
+  "Loading clan data...",
+  "Connecting to server...",
+  "System online ✔",
+  "Welcome to GILES"
+];
+
+let i = 0;
+
+function type() {
+  if (i < messages.length) {
+    terminal.innerHTML += messages[i] + "<br>";
+    i++;
+    setTimeout(type, 1000);
+  }
+}
+
+type();
+
+/* MATRIX RAIN */
+const canvas = document.getElementById("rain");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = "01";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+
+let drops = [];
+
+for (let x = 0; x < columns; x++) {
+  drops[x] = 1;
+}
+
+function draw() {
+  ctx.fillStyle = "rgba(0,0,0,0.05)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "cyan";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+      drops[i] = 0;
+
+    drops[i]++;
+  }
+}
+
+setInterval(draw, 33);
+</script>
+
+</body>
+  </html>
